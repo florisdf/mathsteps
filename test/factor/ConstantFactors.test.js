@@ -1,4 +1,5 @@
 const ConstantFactors = require('../../lib/factor/ConstantFactors');
+const mathjs = require('mathjs');
 
 const TestUtil = require('../TestUtil');
 
@@ -20,7 +21,7 @@ describe('prime factors', function() {
     [13195, [5, 7, 13, 29]],
     [1234567891, [1234567891]]
   ];
-  tests.forEach(t => testPrimeFactors(t[0], t[1]));
+  tests.forEach(t => testPrimeFactors(mathjs.parse(t[0]), t[1].map(n => mathjs.parse(n))));
 });
 
 function testFactorPairs(input, output) {
