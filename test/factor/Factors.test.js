@@ -78,6 +78,7 @@ function testCommonFactors(terms, expectOut) {
 describe('common factors', function() {
   const tests = [
     [['4', '2'], ['2']],
+    [['-4', '-2'], ['2', '-1']],
     [['12', '4'], ['2', '2']],
     [['12x^3', '4x^2'], ['2', '2', 'x', 'x']],
     [['6x * y^2', '9y * x^2'], ['3', 'x', 'y']],
