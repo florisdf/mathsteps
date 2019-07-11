@@ -4,7 +4,7 @@ const assert = require('assert');
 
 const TestUtil = require('../TestUtil');
 
-function testPrimeFactors(exprString, expectOut) {
+function testFactors(exprString, expectOut) {
   it(exprString + ' -> ' + expectOut.join(', '), function () {
     const expression = mathjs.parse(exprString);
     const out = Factors.getFactors(expression);
@@ -12,7 +12,7 @@ function testPrimeFactors(exprString, expectOut) {
   });
 }
 
-describe('prime factors', function() {
+describe('factors', function() {
   const tests = [
     ['1', ['1']],
     ['-1', ['-1', '1']],
@@ -29,7 +29,7 @@ describe('prime factors', function() {
     ['x^2', ['x', 'x']],
     ['6x^2*7*y^3', ['2', '3', 'x', 'x', '7', 'y', 'y', 'y']],
   ];
-  tests.forEach(t => testPrimeFactors(t[0], t[1]));
+  tests.forEach(t => testFactors(t[0], t[1]));
 });
 
 function testFactorPairs(input, output) {
