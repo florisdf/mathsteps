@@ -83,6 +83,7 @@ describe('common factors', function() {
     [['6x * y^2', '9y * x^2'], ['3', 'x', 'y']],
     [['2x * 9y^2', '7x^2'], ['x']],
     [['2x', 'y'], []],
+    [['2x*y^2/15', '4y/5'], ['2', 'y', '1 / 5']],
   ];
   tests.forEach(t => testCommonFactors(t[0], t[1]));
 });
