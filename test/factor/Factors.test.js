@@ -1,4 +1,4 @@
-const ConstantFactors = require('../../lib/factor/ConstantFactors');
+const Factors = require('../../lib/factor/Factors');
 const mathjs = require('mathjs');
 const assert = require('assert');
 
@@ -7,7 +7,7 @@ const TestUtil = require('../TestUtil');
 function testPrimeFactors(exprString, expectOut) {
   it(exprString + ' -> ' + expectOut.join(', '), function () {
     const expression = mathjs.parse(exprString);
-    const out = ConstantFactors.getPrimeFactors(expression);
+    const out = Factors.getFactors(expression);
     assert.deepEqual(out.map(n => n.toString()), expectOut);
   });
 }
@@ -26,13 +26,14 @@ describe('prime factors', function() {
     ['13195', ['5', '7', '13', '29']],
     ['1234567891', ['1234567891']],
     ['2x', ['2', 'x']],
+    ['x^2', ['x', 'x']],
     ['6x^2*7*y^3', ['2', '3', 'x', 'x', '7', 'y', 'y', 'y']],
   ];
   tests.forEach(t => testPrimeFactors(t[0], t[1]));
 });
 
 function testFactorPairs(input, output) {
-  TestUtil.testFunctionOutput(ConstantFactors.getFactorPairs, input, output);
+  TestUtil.testFunctionOutput(Factors.getFactorPairs, input, output);
 }
 
 describe('factor pairs', function() {
