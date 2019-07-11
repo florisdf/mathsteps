@@ -32,6 +32,30 @@ describe('factors', function() {
   tests.forEach(t => testFactors(t[0], t[1]));
 });
 
+function testFactorCounts(exprString, expectOut) {
+  it(exprString + ' -> ' + expectOut, function () {
+    const expression = mathjs.parse(exprString);
+    const out = Factors.getFactorCounts(expression);
+
+    let outStr = {};
+    Object.keys(out).forEach(function (key) {
+      outStr[key.toString()] = out[key];
+    });
+    assert.deepEqual(outStr, expectOut);
+  });
+}
+
+describe('factor counts', function() {
+  const tests = [
+    ['x', {'x': 1}],
+    ['12x', {'2': 2, '3': 1, 'x': 1}],
+    ['12x^2', {'2': 2, '3': 1, 'x': 2}],
+    ['12x^2 * y^3', {'2': 2, '3': 1, 'x': 2, 'y': 3}],
+    ['12x^2 * 3y^3', {'2': 2, '3': 2, 'x': 2, 'y': 3}],
+  ];
+  tests.forEach(t => testFactorCounts(t[0], t[1]));
+});
+
 function testFactorPairs(input, output) {
   TestUtil.testFunctionOutput(Factors.getFactorPairs, input, output);
 }
