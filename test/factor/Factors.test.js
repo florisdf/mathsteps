@@ -15,7 +15,7 @@ function testFactors(exprString, expectOut) {
   });
 }
 
-describe('factors', function() {
+describe('get factors', function() {
   const tests = [
     ['1', ['1']],
     ['-1', ['-1', '1']],
@@ -39,6 +39,7 @@ describe('factors', function() {
     ['x^2/6', ['x', 'x', '1 / 2', '1 / 3']],
     ['1/(4)', ['1 / 2', '1 / 2']],
     ['6/(35x^2)', ['2', '3', '1 / 5', '1 / 7', '1 / x', '1 / x']],
+    ['(x + 1)*5', ['x + 1', '5']],
   ];
   tests.forEach(t => testFactors(t[0], t[1]));
 });
