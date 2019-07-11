@@ -9,7 +9,9 @@ function testFactors(exprString, expectOut) {
     const expression = mathjs.parse(exprString);
     const out = Factors.getFactors(expression);
     assert.equal(out.every(o => typeof o === 'object'), true);
-    assert.deepEqual(out.map(n => n.toString()), expectOut);
+    assert.deepEqual(
+      out.map(n => n.toString()),
+      expectOut);
   });
 }
 
@@ -26,9 +28,17 @@ describe('factors', function() {
     ['1260', ['2', '2', '3', '3', '5', '7']],
     ['13195', ['5', '7', '13', '29']],
     ['1234567891', ['1234567891']],
+
+    ['x', ['x']],
+    ['1/x', ['1 / x']],
+    ['1/x^2', ['1 / x', '1 / x']],
     ['2x', ['2', 'x']],
     ['x^2', ['x', 'x']],
     ['6x^2*7*y^3', ['2', '3', 'x', 'x', '7', 'y', 'y', 'y']],
+    ['(1/2)x^2', ['1 / 2', 'x', 'x']],
+    ['x^2/6', ['x', 'x', '1 / 2', '1 / 3']],
+    ['1/(4)', ['1 / 2', '1 / 2']],
+    ['6/(35x^2)', ['2', '3', '1 / 5', '1 / 7', '1 / x', '1 / x']],
   ];
   tests.forEach(t => testFactors(t[0], t[1]));
 });
