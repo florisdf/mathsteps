@@ -57,6 +57,26 @@ describe('factor counts', function() {
   tests.forEach(t => testFactorCounts(t[0], t[1]));
 });
 
+function testCommonFactors(terms, expectOut) {
+  it(terms.join(', ') + ' -> ' + expectOut.join(', '), function () {
+    const nodeTerms = terms.map(t => mathjs.parse(t));
+    const out = Factors.getCommonFactors(nodeTerms);
+    assert.deepEqual(out.map(n => n.toString()), expectOut);
+  });
+}
+
+describe('common factors', function() {
+  const tests = [
+    [['4', '2'], ['2']],
+    [['12', '4'], ['2', '2']],
+    [['12x^3', '4x^2'], ['2', '2', 'x', 'x']],
+    [['6x * y^2', '9y * x^2'], ['3', 'x', 'y']],
+    [['2x * 9y^2', '7x^2'], ['x']],
+    [['2x', 'y'], []],
+  ];
+  tests.forEach(t => testCommonFactors(t[0], t[1]));
+});
+
 function testFactorPairs(input, output) {
   TestUtil.testFunctionOutput(Factors.getFactorPairs, input, output);
 }
