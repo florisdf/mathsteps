@@ -8,6 +8,7 @@ function testFactors(exprString, expectOut) {
   it(exprString + ' -> ' + expectOut.join(', '), function () {
     const expression = mathjs.parse(exprString);
     const out = Factors.getFactors(expression);
+    assert.equal(out.every(o => typeof o === 'object'), true);
     assert.deepEqual(out.map(n => n.toString()), expectOut);
   });
 }
