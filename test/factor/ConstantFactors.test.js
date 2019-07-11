@@ -1,27 +1,34 @@
 const ConstantFactors = require('../../lib/factor/ConstantFactors');
 const mathjs = require('mathjs');
+const assert = require('assert');
 
 const TestUtil = require('../TestUtil');
 
-function testPrimeFactors(input, output) {
-  TestUtil.testFunctionOutput(ConstantFactors.getPrimeFactors, input, output);
+function testPrimeFactors(exprString, expectOut) {
+  it(exprString + ' -> ' + expectOut.join(', '), function () {
+    const expression = mathjs.parse(exprString);
+    const out = ConstantFactors.getPrimeFactors(expression);
+    assert.deepEqual(out.map(n => n.toString()), expectOut);
+  });
 }
 
 describe('prime factors', function() {
   const tests = [
-    [1, [1]],
-    [-1, [-1, 1]],
-    [-2, [-1, 2]],
-    [5, [5]],
-    [12, [2, 2, 3]],
-    [15, [3, 5]],
-    [36, [2, 2, 3, 3]],
-    [49, [7, 7]],
-    [1260, [2, 2, 3, 3, 5, 7]],
-    [13195, [5, 7, 13, 29]],
-    [1234567891, [1234567891]]
+    ['1', ['1']],
+    ['-1', ['-1', '1']],
+    ['-2', ['-1', '2']],
+    ['5', ['5']],
+    ['12', ['2', '2', '3']],
+    ['15', ['3', '5']],
+    ['36', ['2', '2', '3', '3']],
+    ['49', ['7', '7']],
+    ['1260', ['2', '2', '3', '3', '5', '7']],
+    ['13195', ['5', '7', '13', '29']],
+    ['1234567891', ['1234567891']],
+    ['2x', ['2', 'x']],
+    ['6x^2*7*y^3', ['2', '3', 'x', 'x', '7', 'y', 'y', 'y']],
   ];
-  tests.forEach(t => testPrimeFactors(mathjs.parse(t[0]), t[1].map(n => mathjs.parse(n))));
+  tests.forEach(t => testPrimeFactors(t[0], t[1]));
 });
 
 function testFactorPairs(input, output) {
