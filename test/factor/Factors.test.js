@@ -100,6 +100,27 @@ function testFactorPairs(input, output) {
   TestUtil.testFunctionOutput(Factors.getFactorPairs, input, output);
 }
 
+function testDivide(term, divisor, expectOut) {
+  it(`${term} by ${divisor}` + ' -> ' + expectOut, function () {
+    const inTerm = mathjs.parse(term);
+    const inDivisor = mathjs.parse(divisor);
+    const out = Factors.divide(inTerm, inDivisor);
+    assert.deepEqual(out.toString(), expectOut);
+  });
+}
+
+describe('divide factor', function() {
+  const tests = [
+    ['6', '3', '2'],
+    ['x^2', 'x', 'x'],
+    ['x^2 + x', 'x', 'x + 1'],
+    ['x^2 - x', 'x', 'x - 1'],
+    ['(x + 1) * x', 'x + 1', 'x'],
+    ['(x + 1) * x + 3* (x + 1)', 'x + 1', 'x + 3'],
+  ];
+  tests.forEach(t => testDivide(t[0], t[1], t[2]));
+});
+
 describe('factor pairs', function() {
   const tests = [
     [1, [[-1, -1], [1, 1]]],
