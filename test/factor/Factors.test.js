@@ -121,6 +121,23 @@ describe('divide factor', function() {
   tests.forEach(t => testDivide(t[0], t[1], t[2]));
 });
 
+function testIsolate(node, factor, expectOut) {
+  it(`${factor} from ${node}` + ' -> ' + expectOut, function () {
+    const inNode = mathjs.parse(node);
+    const inFactor = mathjs.parse(factor);
+    const out = Factors.isolate(inNode, inFactor);
+    assert.deepEqual(out.toString(), expectOut);
+  });
+}
+
+describe('isolate factor', function() {
+  const tests = [
+    ['x^2 + x', 'x', 'x * (x + 1)'],
+    ['2 * (x + 1) - 3x * (1 + x)', 'x + 1', '(x + 1) * (2 - 3 * x)'],
+  ];
+  tests.forEach(t => testIsolate(t[0], t[1], t[2]));
+});
+
 describe('factor pairs', function() {
   const tests = [
     [1, [[-1, -1], [1, 1]]],
