@@ -117,6 +117,7 @@ describe('divide factor', function() {
     ['x^2 - x', 'x', 'x - 1'],
     ['(x + 1) * x', 'x + 1', 'x'],
     ['(x + 1) * x + 3* (x + 1)', 'x + 1', 'x + 3'],
+    ['3y^3 - 6y^2', '3y^2', 'y - 2'],
   ];
   tests.forEach(t => testDivide(t[0], t[1], t[2]));
 });
@@ -134,6 +135,8 @@ describe('isolate factor', function() {
   const tests = [
     ['x^2 + x', 'x', 'x * (x + 1)'],
     ['2 * (x + 1) - 3x * (1 + x)', 'x + 1', '(x + 1) * (2 - 3 * x)'],
+    ['3y^3 - 6y^2', '3y^2', '3 * y ^ 2 * (y - 2)'],
+    ['3x^2 * y^3 - 6y^2 * x', '3y^2 * x', '3 * y ^ 2 * x * (x * y - 2)'],
   ];
   tests.forEach(t => testIsolate(t[0], t[1], t[2]));
 });
