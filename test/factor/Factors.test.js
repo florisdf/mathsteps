@@ -96,6 +96,29 @@ describe('common factors', function() {
   tests.forEach(t => testCommonFactors(t[0], t[1]));
 });
 
+function testGcd(terms, expectOut) {
+  it(terms.join(', ') + ' -> ' + expectOut, function () {
+    const nodeTerms = terms.map(t => mathjs.parse(t));
+    const out = Factors.gcd(nodeTerms);
+    assert.deepEqual(out.toString(), expectOut);
+  });
+}
+
+describe('gcd', function() {
+  const tests = [
+    [['4', '2'], '2'],
+    [['-4', '-2'], '-2'],
+    [['12', '4'], '4'],
+    [['12x^3', '4x^2'], '4 * x ^ 2'],
+    [['6x * y^2', '9y * x^2'], '3 * x * y'],
+    [['2x * 9y^2', '7x^2'], 'x'],
+    [['x', 'y'], '1'],
+    [['y^2/15', 'y/5'], 'y / 5'],
+    [['(x + 1)*5', '15*(1 + x)'], '5 * (x + 1)'],
+  ];
+  tests.forEach(t => testGcd(t[0], t[1]));
+});
+
 function testFactorPairs(input, output) {
   TestUtil.testFunctionOutput(Factors.getFactorPairs, input, output);
 }
