@@ -66,3 +66,24 @@ describe('are polynoms opposite', function() {
   ];
   tests.forEach(t => testAreOpposite(t[0], t[1], t[2]));
 });
+
+
+function testAreEqual(poly1, poly2, expectOut) {
+  it(`${poly1} and ${poly2}` + ' -> ' + expectOut, function () {
+    const polyNode1 = mathjs.parse(poly1);
+    const polyNode2 = mathjs.parse(poly2);
+    const out = Polynom.areEqual(polyNode1, polyNode2);
+    assert.equal(out, expectOut);
+  });
+}
+
+describe('are polynoms equal', function() {
+  const tests = [
+    ['3', '-3', false],
+    ['3', '3', true],
+    ['3', 'x', false],
+    ['x', 'x + 0', true],
+    ['x - 1', '- 1 - x + 2*x', true],
+  ];
+  tests.forEach(t => testAreEqual(t[0], t[1], t[2]));
+});
