@@ -96,3 +96,44 @@ describe('gcd', function() {
   tests.forEach(t => testGcd(t[0], t[1]));
 });
 
+function testAreOpposite(term1, term2, expectOut) {
+  it(`${term1} and ${term2}` + ' -> ' + expectOut, function () {
+    const termNode1 = mathjs.parse(term1);
+    const termNode2 = mathjs.parse(term2);
+    const out = Term.areOpposite(termNode1, termNode2);
+    assert.equal(out, expectOut);
+  });
+}
+
+describe('are terms opposite', function() {
+  const tests = [
+    ['3', '-3', true],
+    ['-3', '3', true],
+    ['3', '3', false],
+    ['3', 'x', false],
+    ['x', '-x', true],
+    ['x * -y', 'x * y', true],
+  ];
+  tests.forEach(t => testAreOpposite(t[0], t[1], t[2]));
+});
+
+
+function testAreEqual(term1, term2, expectOut) {
+  it(`${term1} and ${term2}` + ' -> ' + expectOut, function () {
+    const termNode1 = mathjs.parse(term1);
+    const termNode2 = mathjs.parse(term2);
+    const out = Term.areEqual(termNode1, termNode2);
+    assert.equal(out, expectOut);
+  });
+}
+
+describe('are terms equal', function() {
+  const tests = [
+    ['3', '-3', false],
+    ['3', '3', true],
+    ['3', 'x', false],
+    ['-x * 2 * y', 'y * x * -2', true],
+    ['-x^2 * y', 'y * x * -1 * x', true],
+  ];
+  tests.forEach(t => testAreEqual(t[0], t[1], t[2]));
+});
