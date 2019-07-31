@@ -18,7 +18,7 @@ function testFactors(exprString, expectOut) {
 describe('get factors', function() {
   const tests = [
     ['1', ['1']],
-    ['-1', ['-1', '1']],
+    ['-1', ['-1']],
     ['-2', ['-1', '2']],
     ['5', ['5']],
     ['12', ['2', '2', '3']],
@@ -31,6 +31,7 @@ describe('get factors', function() {
 
     ['x', ['x']],
     ['-x', ['-1', 'x']],
+    ['-1 * x', ['-1', 'x']],
     ['-3x', ['-1', '3', 'x']],
     ['1/x', ['1 / x']],
     ['1/x^2', ['1 / x', '1 / x']],
