@@ -87,3 +87,46 @@ describe('are polynoms equal', function() {
   ];
   tests.forEach(t => testAreEqual(t[0], t[1], t[2]));
 });
+
+function testOpEqFacs(poly, expectOut) {
+  it(`${poly}` + ' -> ' + `${expectOut}`, function () {
+    const polyNode = mathjs.parse(poly);
+    const out = Polynom.opEqFacs(polyNode).map(opEq => {
+      let eqs = opEq.equal.map(fac => {
+        return {'term': fac.term, 'fac': fac.fac, 'val': fac.val.toString()};
+      });
+      let ops = opEq.oppos.map(fac => {
+        return {'term': fac.term, 'fac': fac.fac, 'val': fac.val.toString()};
+      });
+
+      return {'equal': eqs, 'oppos': ops};
+    });
+    assert.deepEqual(out, expectOut);
+  });
+}
+
+describe('polynomial opeq breakdown', function() {
+  const tests = [
+    ['x + x',
+      [{'equal': [{'term': 0, 'fac': 0, 'val': 'x'}, {'term': 1, 'fac': 0, 'val': 'x'}],
+        'oppos': []}
+      ]
+    ],
+    ['x + x*3 - 2',
+      [{'equal': [{'term': 0, 'fac': 0, 'val': 'x'}, {'term': 1, 'fac': 0, 'val': 'x'}],
+        'oppos': []}
+      ]
+    ],
+    ['(x - 1) + (1 - x)',
+      [{'equal': [{'term': 0, 'fac': 0, 'val': 'x - 1'}],
+        'oppos': [{'term': 1, 'fac': 0, 'val': '1 - x'}]}
+      ]
+    ],
+    ['(2 + x - 3)*y + (1 - x)*(-2*z)',
+      [{'equal': [{'term': 0, 'fac': 0, 'val': 'x - 1'}],
+        'oppos': [{'term': 1, 'fac': 0, 'val': '1 - x'}]}
+      ]
+    ],
+  ];
+  tests.forEach(t => testOpEqFacs(t[0], t[1]));
+});
