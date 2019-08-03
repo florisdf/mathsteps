@@ -19,6 +19,7 @@ describe('get terms', function() {
     ['(x - 2)', ['(x - 2)']],
     ['2x - 6y^2', ['2 x', '-6 y ^ 2']],
     ['y + (3x - 1)', ['y', '(3 x - 1)']],
+    ['y - (3x - 1)', ['y', '-(3 x - 1)']],
   ];
   tests.forEach(t => testGetTerms(t[0], t[1]));
 });
