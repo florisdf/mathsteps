@@ -25,6 +25,48 @@ describe('divide non-poly factor', function() {
   tests.forEach(t => testDivide(t[0], t[1], t[2]));
 });
 
+function testNegate(node, expectOut) {
+  it(`${node} -> ${expectOut}`, function() {
+    const inNode = mathjs.parse(node);
+    const out = Polynom.negate(inNode);
+    assert.equal(out.toString(), expectOut);
+  });
+}
+
+describe('negate polynomial', function() {
+  const tests = [
+    ['x', '-x'],
+    ['2x', '-2 x'],
+    ['2 * x', '-2 * x'],
+    ['x - 1', '-x + 1'],
+    ['x - 1 + 3y', '-x + 1 - 3 y'],
+    ['2(x - 1) + 3y - 6 * (y - 2)', '-2 (x - 1) - 3 y + 6 * (y - 2)'],
+  ];
+  tests.forEach(t => testNegate(t[0], t[1]));
+});
+
+
+function testTermFacsToNode(terms, expectOut, allowImplicit) {
+  it(`${terms} -> `
+  + `${expectOut} (${allowImplicit ? '' : 'not '}allowing implicit)`, function() {
+    const inTerms = terms.map(t => mathjs.parse(t));
+    const out = Polynom.termFacsToNode(inTerms, allowImplicit);
+    assert.equal(out.toString(), expectOut);
+  });
+}
+
+describe('termfacs to node', function() {
+  const tests = [
+    [[['x']], 'x', true],
+    [[['3', 'x']], '3 x', true],
+    [[['3', 'x']], '3 * x', false],
+    [[['3'], ['2', 'x']], '3 + 2 x', true],
+    [[['-x'], ['1'], ['-3', 'y']], '-x + 1 - 3 y', true],
+    [[['-x'], ['1'], ['-3', 'y']], '-x + 1 - 3 * y', false],
+  ];
+  tests.forEach(t => testTermFacsToNode(t[0], t[1], t[2]));
+});
+
 
 function testIsolate(node, factor, expectOut) {
   it(`${factor} from ${node}` + ' -> ' + expectOut, function () {

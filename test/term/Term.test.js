@@ -24,6 +24,26 @@ describe('get terms', function() {
   tests.forEach(t => testGetTerms(t[0], t[1]));
 });
 
+
+function testTermsToNode(terms, expectOut) {
+  it(`[${terms.join(', ')}] -> ${expectOut}`, function() {
+    const inTerms = terms.map(t => mathjs.parse(t));
+    const out = Term.termsToNode(inTerms);
+    assert.equal(out.toString(), expectOut);
+  });
+}
+
+describe('terms to node', function() {
+  const tests = [
+    [['x'], 'x'],
+    [['3', '2x'], '3 + 2 x'],
+    [['-x', '1', '-3y'], '-x + 1 - 3 y'],
+    [['-x', '1', '-3*y'], '-x + 1 - 3 * y'],
+  ];
+  tests.forEach(t => testTermsToNode(t[0], t[1]));
+});
+
+
 function testFactorCounts(exprString, expectOut) {
   it(exprString + ' -> ' + expectOut, function () {
     const expression = mathjs.parse(exprString);
