@@ -44,6 +44,30 @@ describe('terms to node', function() {
 });
 
 
+function testTermsWithCgrpToNode(terms, cgrp) {
+  it(`[${terms.join(', ')}] with changegroup ${cgrp}`, function() {
+    const inTerms = terms.map(t => {
+      let node = mathjs.parse(t);
+      node.changeGroup = cgrp;
+      return node;
+    });
+    const out = Term.getTerms(Term.termsToNode(inTerms));
+    assert.equal(out[0].changeGroup, cgrp);
+  });
+}
+
+describe('terms with changeGroup to node', function() {
+  const tests = [
+    [['x'], 1],
+    [['3', '2x'], 0, '3 + 2 x'],
+    [['-x', '1', '-3y'], 2, '-x + 1 - 3 y'],
+    [['-x', '1', '-3*y'], 3, '-x + 1 - 3 * y'],
+  ];
+  tests.forEach(t => testTermsWithCgrpToNode(t[0], t[1], t[2]));
+});
+
+
+
 function testFactorCounts(exprString, expectOut) {
   it(exprString + ' -> ' + expectOut, function () {
     const expression = mathjs.parse(exprString);
