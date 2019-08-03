@@ -169,6 +169,11 @@ describe('polynomial opeq breakdown', function() {
         'oppos': [{'term': 1, 'fac': 0, 'val': '1 - x'}]}
       ]
     ],
+    ['a*(x - 1) - b*(1 - x)',
+      [{'equal': [{'term': 0, 'fac': 1, 'val': 'x - 1'}],
+        'oppos': [{'term': 1, 'fac': 2, 'val': '1 - x'}]}
+      ]
+    ]
   ];
   tests.forEach(t => testOpEqFacs(t[0], t[1]));
 });
