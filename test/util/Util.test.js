@@ -1,5 +1,6 @@
 const assert = require('assert');
 const mathjs = require('mathjs');
+const _ = require('lodash');
 
 const Util = require('../../lib/util/Util');
 
@@ -41,4 +42,25 @@ describe('have same nodes', function() {
     [ ['-2', 'x^2 - 3', '6 - y'], ['6 - y', '-2', 'x^2 - 3'], true ],
   ];
   tests.forEach(t => testHaveSameNodes(t[0], t[1], t[2]));
+});
+
+function testModifyNode(expr1, expr2) {
+  it(`${expr1} to ${expr2}`, function() {
+    const expr1Node = mathjs.parse(expr1);
+    const expr2Node = mathjs.parse(expr2);
+    const oldExpr1Node = expr1Node;
+
+    Util.modifyNode(expr1Node, expr2Node);
+    assert.equal(oldExpr1Node, expr1Node);
+    assert.deepEqual(expr1Node, expr2Node);
+  });
+}
+
+describe('modify node', function() {
+  const tests = [
+    ['x', 'y'],
+    ['x + 1', '-9'],
+    ['x^2 + 2x + 1', 'x^2 - 1'],
+  ];
+  tests.forEach(t => testModifyNode(t[0], t[1]));
 });
