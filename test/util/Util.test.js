@@ -90,3 +90,20 @@ describe('get node path', function() {
   ];
   tests.forEach(t => testGetNodePath(t[0], t[1], t[2]));
 });
+
+
+function testGetParentPath(childPath, parPath) {
+  it(`${childPath} -> ${parPath}`, function() {
+    const out = Util.getParentPath(childPath);
+    assert.equal(out, parPath);
+  });
+}
+
+describe('get parent path', function() {
+  const tests = [
+    ['args[0].args[1]', 'args[0]'],
+    ['args[0].args[1].content', 'args[0].args[1]'],
+    ['args[0]', ''],
+  ];
+  tests.forEach(t => testGetParentPath(t[0], t[1]));
+});
