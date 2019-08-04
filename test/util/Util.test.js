@@ -69,3 +69,24 @@ describe('modify node', function() {
   ];
   tests.forEach(t => testModifyNode(t[0], t[1]));
 });
+
+
+function testGetNodePath(expr, path) {
+  const nodeTree = mathjs.parse(expr);
+  const node = _.get(nodeTree, path);
+  it(`${node} in ${nodeTree} -> ${path}`, function() {
+    const out = Util.getNodePath(node, nodeTree);
+    assert.equal(out, path);
+  });
+}
+
+describe('get node path', function() {
+  const tests = [
+    ['3x', 'args[1]'],
+    ['3 + 3', 'args[1]'],
+    ['3x + 3', 'args[1]'],
+    ['3x + 3', 'args[0].args[1]'],
+    ['-9x^2 + 3x - 8', 'args[0].args[0].args[1].args[1]'],
+  ];
+  tests.forEach(t => testGetNodePath(t[0], t[1], t[2]));
+});
