@@ -51,13 +51,18 @@ function testModifyNode(expr1, expr2) {
     const oldExpr1Node = expr1Node;
 
     Util.modifyNode(expr1Node, expr2Node);
+
+    // Same ref
     assert.equal(oldExpr1Node, expr1Node);
+
+    // But with properties of expr2Node
     assert.deepEqual(expr1Node, expr2Node);
   });
 }
 
 describe('modify node', function() {
   const tests = [
+    ['3', 'y'],
     ['x', 'y'],
     ['x + 1', '-9'],
     ['x^2 + 2x + 1', 'x^2 - 1'],
