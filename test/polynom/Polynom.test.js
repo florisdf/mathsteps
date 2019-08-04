@@ -1,6 +1,7 @@
 const assert = require('assert');
 const mathjs = require('mathjs');
 const Polynom = require('../../lib/polynom/Polynom');
+const _ = require('lodash');
 
 
 function testDivide(term, divisor, expectOut) {
@@ -176,4 +177,22 @@ describe('polynomial opeq breakdown', function() {
     ]
   ];
   tests.forEach(t => testOpEqFacs(t[0], t[1]));
+});
+
+
+function testOpEqFacRefConsistence(poly, polyPath, opEqPath) {
+  it(`Ref consistence for ${poly}`, function() {
+    const polyNode = mathjs.parse(poly);
+    const opEqs = Polynom.opEqFacs(polyNode);
+    assert.equal(_.get(polyNode, polyPath), _.get(opEqs, opEqPath));
+  });
+}
+
+describe('opeq reference consistence', function() {
+  const tests = [
+    ['x + x', 'args[0]', '[0].equal[0].val'],
+    ['x + x*3 - 2', 'args[0].args[0]', '[0].equal[0].val'],
+    ['(x - 1) + (1 - x)', 'args[1].content', '[0].oppos[0].val'],
+  ];
+  tests.forEach(t => testOpEqFacRefConsistence(t[0], t[1], t[2]));
 });
