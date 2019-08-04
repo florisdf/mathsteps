@@ -1,6 +1,7 @@
 const Factor = require('../../lib/factor/Factor');
 const mathjs = require('mathjs');
 const assert = require('assert');
+const _ = require('lodash');
 
 const TestUtil = require('../TestUtil');
 
@@ -45,6 +46,24 @@ describe('get factors', function() {
     ['(x + 1)*5', ['x + 1', '5']],
   ];
   tests.forEach(t => testFactors(t[0], t[1]));
+});
+
+
+function testFactorsRefConsistence(expr, exprPath, facsPath) {
+  it(expr + ' factors ref consistence', function () {
+    const exprNode = mathjs.parse(expr);
+    const facs = Factor.getFactors(exprNode);
+    assert.equal(_.get(exprNode, exprPath), _.get(facs, facsPath));
+  });
+}
+
+describe('get factors ref consistence', function() {
+  const tests = [
+    ['1*2', 'args[0]', '[0]'],
+    ['3x', 'args[1]', '[1]'],
+    ['3x', 'args[0]', '[0]'],
+  ];
+  tests.forEach(t => testFactorsRefConsistence(t[0], t[1], t[2]));
 });
 
 function testFactorPairs(input, output) {
