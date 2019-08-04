@@ -166,7 +166,7 @@ describe('polynomial opeq breakdown', function() {
       ]
     ],
     ['(2 + x - 3)*y + (1 - x)*(-2*z)',
-      [{'equal': [{'term': 0, 'fac': 0, 'val': 'x - 1'}],
+      [{'equal': [{'term': 0, 'fac': 0, 'val': '2 + x - 3'}],
         'oppos': [{'term': 1, 'fac': 0, 'val': '1 - x'}]}
       ]
     ],
