@@ -205,7 +205,7 @@ describe('opeq reference consistence', function() {
   const tests = [
     ['x + x', 'args[0]', '[0].equal[0].val'],
     ['x + x*3 - 2', 'args[0].args[0]', '[0].equal[0].val'],
-    ['(x - 1) + (1 - x)', 'args[1].content', '[0].oppos[0].val'],
+    ['(x - 1) + (1 - x)', 'args[1]', '[0].oppos[0].val'],
   ];
   tests.forEach(t => testOpEqFacRefConsistence(t[0], t[1], t[2]));
 });
