@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const assert = require('assert');
 const mathjs = require('mathjs');
 const Term = require('../../lib/term/Term');
@@ -25,6 +26,25 @@ describe('get terms', function() {
 });
 
 
+function testTermsRefConsistence(expr, exprPath, termsPath) {
+  it(expr + ' terms ref consistence', function () {
+    const exprNode = mathjs.parse(expr);
+    const terms = Term.getTerms(exprNode);
+    assert.equal(_.get(exprNode, exprPath), _.get(terms, termsPath));
+  });
+}
+
+describe('terms reference consistence', function() {
+  const tests = [
+    ['x + 2', 'args[0]', '[0]'],
+    ['x - 2', 'args[1]', '[1].args[0]'],
+    ['(x - 2)', 'contents', '[0].contents'],
+    ['y + (3x - 1)', 'args[1]', '[1]'],
+    ['y - (3x - 1)', 'args[1]', '[1].args[0]'],
+  ];
+  tests.forEach(t => testTermsRefConsistence(t[0], t[1], t[2]));
+});
+
 function testTermsToNode(terms, expectOut) {
   it(`[${terms.join(', ')}] -> ${expectOut}`, function() {
     const inTerms = terms.map(t => mathjs.parse(t));
@@ -47,7 +67,7 @@ describe('terms to node', function() {
 function testTermsWithCgrpToNode(terms, cgrp) {
   it(`[${terms.join(', ')}] with changegroup ${cgrp}`, function() {
     const inTerms = terms.map(t => {
-      let node = mathjs.parse(t);
+      const node = mathjs.parse(t);
       node.changeGroup = cgrp;
       return node;
     });
@@ -67,13 +87,12 @@ describe('terms with changeGroup to node', function() {
 });
 
 
-
 function testFactorCounts(exprString, expectOut) {
   it(exprString + ' -> ' + expectOut, function () {
     const expression = mathjs.parse(exprString);
     const out = Term.getFactorCounts(expression);
 
-    let outStr = {};
+    const outStr = {};
     Object.keys(out).forEach(function (key) {
       outStr[key.toString()] = out[key];
     });
