@@ -1,7 +1,7 @@
+const _ = require('lodash');
 const assert = require('assert');
 const mathjs = require('mathjs');
 const Polynom = require('../../lib/polynom/Polynom');
-const _ = require('lodash');
 
 
 function testDivide(term, divisor, expectOut) {
@@ -135,11 +135,11 @@ function testOpEqFacs(poly, expectOut) {
   it(`${poly}` + ' -> ' + `${expectOut}`, function () {
     const polyNode = mathjs.parse(poly);
     const out = Polynom.opEqFacs(polyNode).map(opEq => {
-      let eqs = opEq.equal.map(fac => {
-        return {'term': fac.term, 'fac': fac.fac, 'val': fac.val.toString(), 'path': fac.path};
+      const eqs = opEq.equal.map(fac => {
+        return {'val': fac.val.toString(), 'path': fac.path, 'termPath': fac.termPath};
       });
-      let ops = opEq.oppos.map(fac => {
-        return {'term': fac.term, 'fac': fac.fac, 'val': fac.val.toString(), 'path': fac.path};
+      const ops = opEq.oppos.map(fac => {
+        return {'val': fac.val.toString(), 'path': fac.path, 'termPath': fac.termPath};
       });
 
       return {'equal': eqs, 'oppos': ops};
@@ -151,35 +151,42 @@ function testOpEqFacs(poly, expectOut) {
 describe('polynomial opeq breakdown', function() {
   const tests = [
     ['x + x',
-      [{'equal': [
-        {'term': 0, 'fac': 0, 'val': 'x', 'path': 'args[0]'},
-        {'term': 1, 'fac': 0, 'val': 'x', 'path': 'args[1]'}],
+      [{
+        'equal': [
+          {'val': 'x', 'path': 'args[0]', 'termPath': 'args[0]'},
+          {'val': 'x', 'path': 'args[1]', 'termPath': 'args[1]'}],
 
-        'oppos': []}
+        'oppos': []
+      }
       ]
     ],
     ['x + x*3 - 2',
-      [{'equal': [
-        {'term': 0, 'fac': 0, 'val': 'x', 'path': 'args[0].args[0]'},
-        {'term': 1, 'fac': 0, 'val': 'x', 'path': 'args[0].args[1].args[0]'}],
+      [{
+        'equal': [
+          {'val': 'x', 'path': 'args[0].args[0]', 'termPath': 'args[0].args[0]'},
+          {'val': 'x', 'path': 'args[0].args[1].args[0]', 'termPath': 'args[0].args[1]'}],
 
         'oppos': []}
       ]
     ],
     ['(x - 1) + (1 - x)',
-      [{'equal': [{'term': 0, 'fac': 0, 'val': 'x - 1', 'path': 'args[0].content'}],
-        'oppos': [{'term': 1, 'fac': 0, 'val': '1 - x', 'path': 'args[1].content'}]}
-      ]
+      [{
+        'equal': [{'val': 'x - 1', 'path': 'args[0].content', 'termPath': 'args[0]'}],
+
+        'oppos': [{'val': '1 - x', 'path': 'args[1].content', 'termPath': 'args[1]'}]
+      }]
     ],
     ['(2 + x - 3)*y + (1 - x)*(-2*z)',
-      [{'equal': [{'term': 0, 'fac': 0, 'val': '2 + x - 3', 'path': 'args[0].args[0].content'}],
-        'oppos': [{'term': 1, 'fac': 0, 'val': '1 - x', 'path': 'args[1].args[0].content'}]}
-      ]
+      [{
+        'equal': [{'val': '2 + x - 3', 'path': 'args[0].args[0].content', 'termPath': 'args[0]'}],
+        'oppos': [{'val': '1 - x', 'path': 'args[1].args[0].content', 'termPath': 'args[1]'}]
+      }]
     ],
     ['a*(x - 1) - b*(1 - x)',
-      [{'equal': [{'term': 0, 'fac': 1, 'val': 'x - 1', 'path': 'args[0].args[1].content'}],
-        'oppos': [{'term': 1, 'fac': 2, 'val': '1 - x', 'path': 'args[1].args[1].content'}]}
-      ]
+      [{
+        'equal': [{'val': 'x - 1', 'path': 'args[0].args[1].content', 'termPath': 'args[0]'}],
+        'oppos': [{'val': '1 - x', 'path': 'args[1].args[1].content', 'termPath': 'args[1]'}]
+      }]
     ]
   ];
   tests.forEach(t => testOpEqFacs(t[0], t[1]));
