@@ -171,21 +171,21 @@ describe('polynomial opeq breakdown', function() {
     ],
     ['(x - 1) + (1 - x)',
       [{
-        'equal': [{'val': 'x - 1', 'path': 'args[0].content', 'termPath': 'args[0]'}],
+        'equal': [{'val': '(x - 1)', 'path': 'args[0]', 'termPath': 'args[0]'}],
 
-        'oppos': [{'val': '1 - x', 'path': 'args[1].content', 'termPath': 'args[1]'}]
+        'oppos': [{'val': '(1 - x)', 'path': 'args[1]', 'termPath': 'args[1]'}]
       }]
     ],
     ['(2 + x - 3)*y + (1 - x)*(-2*z)',
       [{
-        'equal': [{'val': '2 + x - 3', 'path': 'args[0].args[0].content', 'termPath': 'args[0]'}],
-        'oppos': [{'val': '1 - x', 'path': 'args[1].args[0].content', 'termPath': 'args[1]'}]
+        'equal': [{'val': '(2 + x - 3)', 'path': 'args[0].args[0]', 'termPath': 'args[0]'}],
+        'oppos': [{'val': '(1 - x)', 'path': 'args[1].args[0]', 'termPath': 'args[1]'}]
       }]
     ],
     ['a*(x - 1) - b*(1 - x)',
       [{
-        'equal': [{'val': 'x - 1', 'path': 'args[0].args[1].content', 'termPath': 'args[0]'}],
-        'oppos': [{'val': '1 - x', 'path': 'args[1].args[1].content', 'termPath': 'args[1]'}]
+        'equal': [{'val': '(x - 1)', 'path': 'args[0].args[1]', 'termPath': 'args[0]'}],
+        'oppos': [{'val': '(1 - x)', 'path': 'args[1].args[1]', 'termPath': 'args[1]'}]
       }]
     ]
   ];
