@@ -1,22 +1,23 @@
-const Factor = require('../../lib/factor/Factor');
-const mathjs = require('mathjs');
-const assert = require('assert');
 const _ = require('lodash');
+const assert = require('assert');
+const mathjs = require('mathjs');
+
+const Factor = require('../../lib/factor/Factor');
 
 const TestUtil = require('../TestUtil');
 
-function testFactors(exprString, expectOut) {
+
+function testSplitNumberPrimes(exprString, expectOut) {
   it(exprString + ' -> ' + expectOut.join(', '), function () {
     const expression = mathjs.parse(exprString);
-    const out = Factor.getFactors(expression);
+    const out = Factor.splitNumberPrimes(expression);
+
     assert.equal(out.every(o => typeof o === 'object'), true);
-    assert.deepEqual(
-      out.map(n => n.toString()),
-      expectOut);
+    assert.deepEqual(out.map(n => n.toString()), expectOut);
   });
 }
 
-describe('get factors', function() {
+describe('split number into primes', function() {
   const tests = [
     ['1', ['1']],
     ['-1', ['-1']],
@@ -29,9 +30,71 @@ describe('get factors', function() {
     ['1260', ['2', '2', '3', '3', '5', '7']],
     ['13195', ['5', '7', '13', '29']],
     ['1234567891', ['1234567891']],
+  ];
+  tests.forEach(t => testSplitNumberPrimes(t[0], t[1]));
+});
 
+
+function testGetFactors(exprString, expectOut) {
+  it(exprString + ' -> ' + expectOut.join(', '), function () {
+    const expression = mathjs.parse(exprString);
+    const out = Factor.getFactors(expression);
+    assert.equal(out.every(o => typeof o === 'object'), true);
+    assert.deepEqual(
+      out.map(n => n.toString()),
+      expectOut);
+  });
+}
+
+describe('get factors', function() {
+  const tests = [
+    ['2x', ['2', 'x']],
+    ['x^2', ['x ^ 2']],
+    ['6x^2*7*y^3', ['6', 'x ^ 2', '7', 'y ^ 3']],
+    ['(1/2)x^2', ['(1 / 2)', 'x ^ 2']],
+    ['(x - 1)*(1 - x)', ['(x - 1)', '(1 - x)']],
+    ['-b*(1 - x)', ['-b', '(1 - x)']],
+  ];
+  tests.forEach(t => testGetFactors(t[0], t[1]));
+});
+
+
+function testGetFactorPaths(exprString, expectOut) {
+  it(exprString + ' -> ' + expectOut.join(', '), function () {
+    const expression = mathjs.parse(exprString);
+    const out = Factor.getFactorPaths(expression);
+    assert.deepEqual(out, expectOut);
+  });
+}
+
+describe('get factor paths', function() {
+  const tests = [
+    ['2x', ['args[0]', 'args[1]']],
+    ['x^2', ['']],
+    ['6x^2*7*y^3',
+      ['args[0].args[0].args[0]', 'args[0].args[0].args[1]',
+        'args[0].args[1]', 'args[1]']],
+    ['(1/2)x^2', ['args[0]', 'args[1]']],
+  ];
+  tests.forEach(t => testGetFactorPaths(t[0], t[1]));
+});
+
+
+function testFullSplit(exprString, expectOut) {
+  it(exprString + ' -> ' + expectOut.join(', '), function () {
+    const expression = mathjs.parse(exprString);
+    const out = Factor.fullSplit(expression);
+    assert.equal(out.every(o => typeof o === 'object'), true);
+    assert.deepEqual(
+      out.map(n => n.toString()),
+      expectOut);
+  });
+}
+
+describe('get full factor split', function() {
+  const tests = [
     ['x', ['x']],
-    ['-x', ['-1', 'x']],
+    ['-x', ['-x']],
     ['-1 * x', ['-1', 'x']],
     ['-3x', ['-1', '3', 'x']],
     ['1/x', ['1 / x']],
@@ -47,9 +110,9 @@ describe('get factors', function() {
     ['(x + 1)*5', ['(x + 1)', '5']],
     ['(x - 1)*(1 - x)', ['(x - 1)', '(1 - x)']],
     ['a*(x - 1)', ['a', '(x - 1)']],
-    ['-b*(1 - x)', ['-1', 'b', '(1 - x)']],
+    ['-b*(1 - x)', ['-b', '(1 - x)']],
   ];
-  tests.forEach(t => testFactors(t[0], t[1]));
+  tests.forEach(t => testFullSplit(t[0], t[1]));
 });
 
 
@@ -69,6 +132,7 @@ describe('get factors ref consistence', function() {
   ];
   tests.forEach(t => testFactorsRefConsistence(t[0], t[1], t[2]));
 });
+
 
 function testFactorPairs(input, output) {
   TestUtil.testFunctionOutput(Factor.getFactorPairs, input, output);
