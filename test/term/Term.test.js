@@ -3,6 +3,27 @@ const assert = require('assert');
 const mathjs = require('mathjs');
 const Term = require('../../lib/term/Term');
 
+function testGetTermPaths(exprString, expectOut) {
+  it(exprString + ' -> ' + expectOut.join(', '), function () {
+    const expression = mathjs.parse(exprString);
+    const out = Term.getTermPaths(expression);
+    assert.deepEqual(out, expectOut);
+  });
+}
+
+describe('get termPaths', function() {
+  const tests = [
+    ['x + 2', ['args[0]', 'args[1]']],
+    ['x - 2', ['args[0]', 'args[1]']],
+    ['x - 2 - b', ['args[0].args[0]', 'args[0].args[1]', 'args[1]']],
+    ['(x - 2)', ['']],
+    ['2x - 6y^2', ['args[0]', 'args[1]']],
+    ['y + (3x - 1)', ['args[0]', 'args[1]']],
+    ['y - (3x - 1)', ['args[0]', 'args[1]']],
+  ];
+  tests.forEach(t => testGetTermPaths(t[0], t[1]));
+});
+
 function testGetTerms(exprString, expectOut) {
   it(exprString + ' -> ' + expectOut.join(', '), function () {
     const expression = mathjs.parse(exprString);
@@ -19,7 +40,7 @@ describe('get terms', function() {
     ['x - 2', ['x', '-2']],
     ['x - 2 - b', ['x', '-2', '-b']],
     ['(x - 2)', ['(x - 2)']],
-    ['2x - 6y^2', ['2 x', '-6 y ^ 2']],
+    ['2x - 6y^2', ['2 x', '-(6 y ^ 2)']],
     ['y + (3x - 1)', ['y', '(3 x - 1)']],
     ['y - (3x - 1)', ['y', '-(3 x - 1)']],
   ];
