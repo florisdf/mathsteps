@@ -46,3 +46,20 @@ describe('get exponents', function() {
   tests.forEach(t => testGetExponents(t[0], t[1]));
 });
 
+function testCollapseExponents(exprString, expectOut) {
+  it(exprString + ' -> ' + expectOut, function () {
+    const expression = mathjs.parse(exprString);
+    const out = Expon.collapseExponents(expression);
+    assert.deepEqual(out.toString(), expectOut);
+  });
+}
+
+describe('collapse exponents', function() {
+  const tests = [
+    ['x', 'x'],
+    ['x^2', 'x ^ 2'],
+    ['x^2^m', 'x ^ (2 * m)'],
+    ['x^2^m^n', 'x ^ (2 * m * n)'],
+  ];
+  tests.forEach(t => testCollapseExponents(t[0], t[1]));
+});
