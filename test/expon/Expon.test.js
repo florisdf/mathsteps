@@ -58,8 +58,8 @@ describe('collapse exponents', function() {
   const tests = [
     ['x', 'x'],
     ['x^2', 'x ^ 2'],
-    ['x^2^m', 'x ^ (2 * m)'],
-    ['x^2^m^n', 'x ^ (2 * m * n)'],
+    ['(x^2)^m', 'x ^ (2 * m)'],
+    ['((x^2)^m)^n', 'x ^ (2 * m * n)'],
   ];
   tests.forEach(t => testCollapseExponents(t[0], t[1]));
 });
