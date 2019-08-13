@@ -43,6 +43,7 @@ describe('get terms', function() {
     ['2x - 6y^2', ['2 x', '-(6 y ^ 2)']],
     ['y + (3x - 1)', ['y', '(3 x - 1)']],
     ['y - (3x - 1)', ['y', '-(3 x - 1)']],
+    ['y - 3*2*x^2', ['y', '-(3 * 2 * x ^ 2)']],
   ];
   tests.forEach(t => testGetTerms(t[0], t[1]));
 });
@@ -152,6 +153,11 @@ describe('common factor paths', function() {
           'args[0].args[1]'],       // The x in the 1st term
         ['args[1].args[0]',         // The 3 in the 2nd term
           'args[1].args[1]']        // The x in the 2nd term
+      ]],
+    ['2*x - 3*x',
+      [
+        ['args[0].args[1]'], // The 3 in the 1st term
+        ['args[1].args[1]'],         // The 3 in the 2nd term
       ]],
   ];
   tests.forEach(t => testCommonFactorPaths(t[0], t[1]));
