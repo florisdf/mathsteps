@@ -135,6 +135,28 @@ describe('factor counts', function() {
   tests.forEach(t => testFactorCounts(t[0], t[1]));
 });
 
+function testCommonFactorPaths(exprString, expectOut) {
+  it(exprString + ' -> ' + expectOut.join(', '), function () {
+    const expr = mathjs.parse(exprString);
+    const out = Term.getCommonFactorPaths(expr);
+    assert.deepEqual(out, expectOut);
+  });
+}
+
+describe('common factor paths', function() {
+  const tests = [
+    ['x + x', [['args[0]'], ['args[1]']]],
+    ['2*3*x + 3*x',
+      [
+        ['args[0].args[0].args[1]', // The 3 in the 1st term
+          'args[0].args[1]'],       // The x in the 1st term
+        ['args[1].args[0]',         // The 3 in the 2nd term
+          'args[1].args[1]']        // The x in the 2nd term
+      ]],
+  ];
+  tests.forEach(t => testCommonFactorPaths(t[0], t[1]));
+});
+
 function testCommonFactors(terms, expectOut) {
   it(terms.join(', ') + ' -> ' + expectOut.join(', '), function () {
     const nodeTerms = terms.map(t => mathjs.parse(t));
