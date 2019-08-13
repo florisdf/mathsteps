@@ -94,7 +94,7 @@ function testFullSplit(exprString, expectOut) {
 describe('get full factor split', function() {
   const tests = [
     ['x', ['x']],
-    ['-x', ['-x']],
+    ['-x', ['-1', 'x']],
     ['-1 * x', ['-1', 'x']],
     ['-3x', ['-1', '3', 'x']],
     ['1/x', ['1 / x']],
@@ -110,8 +110,9 @@ describe('get full factor split', function() {
     ['6/35/x^2', ['2', '3', '1 / 5', '1 / 7', '1 / x', '1 / x']],
     ['(x + 1)*5', ['x + 1', '5']],
     ['(x - 1)*(1 - x)', ['x - 1', '1 - x']],
+    ['-(2x^2)', ['-1', '2', 'x', 'x']],
     ['a*(x - 1)', ['a', 'x - 1']],
-    ['-b*(1 - x)', ['-b', '1 - x']],
+    ['-b*(1 - x)', ['-1', 'b', '1 - x']],
   ];
   tests.forEach(t => testFullSplit(t[0], t[1]));
 });
