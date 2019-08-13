@@ -157,52 +157,6 @@ describe('common factor paths', function() {
   tests.forEach(t => testCommonFactorPaths(t[0], t[1]));
 });
 
-function testCommonFactors(terms, expectOut) {
-  it(terms.join(', ') + ' -> ' + expectOut.join(', '), function () {
-    const nodeTerms = terms.map(t => mathjs.parse(t));
-    const out = Term.getCommonFactors(nodeTerms);
-    assert.deepEqual(out.map(n => n.toString()), expectOut);
-  });
-}
-
-describe('common factors', function() {
-  const tests = [
-    [['4', '2'], ['2']],
-    [['-4', '-2'], ['2', '-1']],
-    [['12', '4'], ['2', '2']],
-    [['12x^3', '4x^2'], ['2', '2', 'x', 'x']],
-    [['6x * y^2', '9y * x^2'], ['3', 'x', 'y']],
-    [['2x * 9y^2', '7x^2'], ['x']],
-    [['x', 'y'], []],
-    [['y^2/15', 'y/5'], ['y', '1 / 5']],
-    [['(x + 1)*5', '15*(1 + x)'], ['5', 'x + 1']],
-  ];
-  tests.forEach(t => testCommonFactors(t[0], t[1]));
-});
-
-function testGcd(terms, expectOut) {
-  it(terms.join(', ') + ' -> ' + expectOut, function () {
-    const nodeTerms = terms.map(t => mathjs.parse(t));
-    const out = Term.gcd(nodeTerms);
-    assert.deepEqual(out.toString(), expectOut);
-  });
-}
-
-describe('gcd', function() {
-  const tests = [
-    [['4', '2'], '2'],
-    [['-4', '-2'], '-2'],
-    [['12', '4'], '4'],
-    [['12x^3', '4x^2'], '4 * x ^ 2'],
-    [['6x * y^2', '9y * x^2'], '3 * x * y'],
-    [['2x * 9y^2', '7x^2'], 'x'],
-    [['x', 'y'], '1'],
-    [['y^2/15', 'y/5'], 'y / 5'],
-    [['(x + 1)*5', '15*(1 + x)'], '5 * (x + 1)'],
-  ];
-  tests.forEach(t => testGcd(t[0], t[1]));
-});
-
 function testAreOpposite(term1, term2, expectOut) {
   it(`${term1} and ${term2}` + ' -> ' + expectOut, function () {
     const termNode1 = mathjs.parse(term1);
