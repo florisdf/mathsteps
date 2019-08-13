@@ -3,26 +3,23 @@ const assert = require('assert');
 const mathjs = require('mathjs');
 const Polynom = require('../../lib/polynom/Polynom');
 
-function testDivide(term, divisor, expectOut) {
+function testNaiveDivide(term, divisor, expectOut) {
   it(`${term} by ${divisor}` + ' -> ' + expectOut, function () {
     const inTerm = mathjs.parse(term);
     const inDivisor = mathjs.parse(divisor);
-    const out = Polynom.divide_np(inTerm, inDivisor);
+    const out = Polynom.naive_divide(inTerm, inDivisor);
     assert.deepEqual(out.toString(), expectOut);
   });
 }
 
-describe('divide non-poly factor', function() {
+describe('naive divide factor', function() {
   const tests = [
-    ['6', '3', '2'],
-    ['x^2', 'x', 'x'],
-    ['x^2 + x', 'x', 'x + 1'],
-    ['x^2 - x', 'x', 'x - 1'],
-    ['(x + 1) * x', 'x + 1', 'x'],
-    ['(x + 1) * x + 3* (x + 1)', 'x + 1', 'x + 3'],
-    ['3y^3 - 6y^2', '3y^2', 'y - 2'],
+    ['x^2', 'x^2', '1'],
+    ['(x + 1) * x', '(x + 1)', 'x'],
+    ['(x + 1) * x + 3* (x + 1)', '(x + 1)', 'x + 3'],
+    ['3y^2 - 2*3*y^2', '3y^2', '1 - 2'],
   ];
-  tests.forEach(t => testDivide(t[0], t[1], t[2]));
+  tests.forEach(t => testNaiveDivide(t[0], t[1], t[2]));
 });
 
 
