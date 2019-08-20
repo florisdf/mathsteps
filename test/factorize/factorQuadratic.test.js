@@ -1,4 +1,4 @@
-const factorQuadratic = require('../../lib/factor/factorQuadratic');
+const factorQuadratic = require('../../lib/factorize/factorQuadratic');
 const TestUtil = require('../TestUtil');
 
 function testFactorQuadratic(input, output) {

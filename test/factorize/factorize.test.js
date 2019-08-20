@@ -1,5 +1,5 @@
 const assert = require('assert');
-const factor = require('../../lib/factor');
+const factor = require('../../lib/factorize');
 const print = require('../../lib/util/print');
 
 const NO_STEPS = 'no-steps';
